@@ -108,8 +108,13 @@ void handle_showSequence() {
 void handle_showProgress() {
     String initialSequenceCode = "<span id=\"initialSequence\" class=\"hidden\">" + initialSequence + "</span>";
     String checkSequenceCode = "<span id=\"checkSequence\" class=\"hidden\">" + checkSequence + "</span>";
+    String stepsAmountCode = "or (let i = 1; i <= " + steps + "; i++)"
 
-    String code = resultPartOne + initialSequenceCode + resultPartTwo + checkSequenceCode + resultPartThree;
+    String code = resultPartOne
+        + initialSequenceCode + resultPartTwo
+        + checkSequenceCode + resultPartThree
+        + stepsAmountCode + resultPartFour;
+
     server.send(200, "text/html", code);
 }
 
