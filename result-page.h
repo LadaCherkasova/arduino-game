@@ -72,7 +72,9 @@ const char resultPartThree[] PROGMEM = R"=====(
         const sequence = document.getElementById(id).innerText;
 
         let finalHTML = "";
-        for (let i = 1; i <= 8; i++) {
+)=====";
+
+const char resultPartFour[] PROGMEM = R"=====(
             let colorInfo;
             if (sequence[i-1] === '1') {
                 colorInfo = ` style=\"background: rgba(246, 49, 49, 0.7);border: 1px solid #C06565;\"`
