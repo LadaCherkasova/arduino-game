@@ -1,4 +1,4 @@
-const char resultPartOne[] PROGMEM = R"=====(
+char resultPage[] PROGMEM = R"=====(
 <!DOCTYPE html>
 <html>
 <style>
@@ -13,7 +13,6 @@ const char resultPartOne[] PROGMEM = R"=====(
         margin: 200px 300px;
         display: flex;
         flex-direction: column;
-        align-items: center;
     }
     a.action-button {
         border-radius: 16px;
@@ -21,7 +20,7 @@ const char resultPartOne[] PROGMEM = R"=====(
         border: 1px solid #C1C1C1;
         background: transparent;
         margin-top: 20px;
-        font-size: 16px;
+        font-size: 20px;
         width: fit-content;
         color: unset;
         text-decoration: unset;
@@ -34,47 +33,57 @@ const char resultPartOne[] PROGMEM = R"=====(
         border-radius: 8px;
         display: flex;
         width: fit-content;
-        align-self: start;
     }
     .title {
         margin-top: 0;
-        font-size: 20px;
+        font-size: 24px;
         margin-bottom: 8px;
-        align-self: start;
-    }
-    .hidden {
-        opacity: 0;
     }
 </style>
 <body>
 
 <div class="container">
-    <p class="title">Правильная последовательность: </p>
-)=====";
-
-const char resultPartTwo[] PROGMEM = R"=====(
+    <p class="title">Initial sequence: </p>
     <div class="answer-field" id="initialSequenceField"></div>
 
-    <p class="title" style="margin-top: 20px">Результат: </p>
-)=====";
-
-const char resultPartThree[] PROGMEM = R"=====(
+    <p class="title" style="margin-top: 20px">Answer sequence: </p>
     <div class="answer-field" id="checkSequenceField"></div>
 
-    <a class="action-button" href="../">Заново</a>
+    <a class="action-button" href="../start">Try again</a>
 </div>
 
 <script>
-    display('initialSequence');
-    display('checkSequence');
+    let initialSequence = "";
+    let checkSequence = "";
+    let steps = 0;
 
-    function display(id) {
-        const sequence = document.getElementById(id).innerText;
+    setInterval(function() {
+      getCurrentState();
+    }, 500);
 
+    function getCurrentState() {
+      let xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+          
+        if (this.status == 200) {
+          [stepsStr, initialSequence, checkSequence] = this.responseText.split([' ']);
+          steps = parseInt(stepsStr);
+        
+          if (steps === 0 || initialSequence === "") {
+            return;
+          }
+          
+          display('initialSequence', initialSequence);
+          display('checkSequence', checkSequence);
+        }
+      };
+      xhttp.open("GET", "getCurrentState", true);
+      xhttp.send();
+    }
+      
+    function display(id, sequence) {
         let finalHTML = "";
-)=====";
-
-const char resultPartFour[] PROGMEM = R"=====(
+        for (let i = 1; i <= steps; i++) {
             let colorInfo;
             if (sequence[i-1] === '1') {
                 colorInfo = ` style=\"background: rgba(246, 49, 49, 0.7);border: 1px solid #C06565;\"`
