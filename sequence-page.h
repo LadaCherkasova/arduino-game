@@ -1,4 +1,4 @@
-const char sequencePage[] PROGMEM = R"=====(
+char sequencePage[] PROGMEM = R"=====(
 <!DOCTYPE html>
 <html>
 <style>
@@ -11,6 +11,7 @@ const char sequencePage[] PROGMEM = R"=====(
         border-radius: 16px;
         padding: 16px;
         margin: 200px 300px;
+        font-size: 24px;
     }
     .header {
         display: flex;
@@ -24,6 +25,8 @@ const char sequencePage[] PROGMEM = R"=====(
         margin-left: 12px;
         background: transparent;
         margin-bottom: 40px;
+        font-size: 24px;
+        font-family: Times;
         cursor: pointer;
     }
     .answer-field {
@@ -46,27 +49,34 @@ const char sequencePage[] PROGMEM = R"=====(
         border: 1px solid #C1C1C1;
         background: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(50px);
+        font-family: Times;
+        font-size: 20px;
         cursor: pointer;
     }
     .plus-button {
-        top: 30%;
+        top: 20%;
     }
     .minus-button {
-        bottom: 30%;
+        bottom: 20%;
+    }
+    a {
+        text-decoration: none;
+        color: black;
     }
 </style>
 <body>
 
 <div class="container">
     <div class="header">
-        <button class="action-button" onClick="generate()">Сгенерировать</button>
-        <button class="action-button" onClick="sendSequence()">Отправить</button>
+        <button class="action-button" onClick="generate()">Generate</button>
+        <button class="action-button" onClick="sendSequence()">Send</button>
+        <a href="../progress" class="action-button">See result</a>
     </div>
 
     <div class="answer-field-wrap" onCLick="adjustSequence(event)">
         <div class="answer-field" id="answer-field"></div>
-        <button class="small-button plus-button" onClick="changeStepsAmount(true)">+ шаг</button>
-        <button class="small-button minus-button" onClick="changeStepsAmount(false)">- шаг</button>
+        <button class="small-button plus-button" onClick="changeStepsAmount(true)">+ step</button>
+        <button class="small-button minus-button" onClick="changeStepsAmount(false)">- step</button>
     </div>
 </div>
 
@@ -157,10 +167,9 @@ const char sequencePage[] PROGMEM = R"=====(
 
     function sendSequence() {
         let xhr = new XMLHttpRequest();
-        const body = 'sequence=' + encodeURIComponent(this.sequence);
-
-        xhr.open("POST", "showSequence", true);
-        xhr.send(body);
+        const path = "showSequence" + '?' + "sequence=" + this.sequence;
+        xhr.open("POST", path, true);
+        xhr.send();
     }
 </script>
 </body>
